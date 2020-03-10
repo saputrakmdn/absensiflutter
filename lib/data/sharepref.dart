@@ -1,12 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
-statusLogin(int) async{
-  SharedPreferences spref = await SharedPreferences.getInstance();
-  await spref.setInt('login', int);
+statusLogin(String int) async{
+  final spref = await SharedPreferences.getInstance();
+  spref.setString('login', int);
 }
 
-getLogin() async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  int value = prefs.getInt('login');
+Future getLogin() async{
+  final prefs = await SharedPreferences.getInstance();
+  final value = prefs.getString('login') ?? '0';
+  print('ajg'+value);
   return value;
 }

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:absensi/data/api.dart';
+import 'package:absensi/data/sharepref.dart';
+import 'package:absensi/data/http_service.dart';
+import 'package:absensi/view/homepage.dart';
 
 class Login extends StatefulWidget{
   LoginState createState(){
@@ -7,6 +12,7 @@ class Login extends StatefulWidget{
 }
 
 class LoginState extends State<Login>{
+  TextEditingController myController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     TextStyle style = TextStyle(fontSize: 20.0);
@@ -19,6 +25,7 @@ class LoginState extends State<Login>{
         hintText: "NIS",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))
       ),
+      controller: myController,
     );
     final loginButton = Material(
       elevation: 5.0,
@@ -27,7 +34,18 @@ class LoginState extends State<Login>{
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: (){},
+        onPressed: (){
+          absen(myController.text.toString()).then((it){
+            print(it);
+            if(it != '0'){
+              statusLogin('1');
+//              Navigator.push(context, new MaterialPageRoute(builder: (context){
+//                return new Homepage();
+//              }));
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Homepage()), ModalRoute.withName('/login'));
+            }
+          });
+        },
         child: Text('LOGIN',
         textAlign: TextAlign.center,
         style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold),),
